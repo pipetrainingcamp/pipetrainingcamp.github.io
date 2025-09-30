@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1.0" />
+    <title>学习Three.js</title>
+</head>
+<body>
+    <div id="w"></div>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        var textureLoader = new THREE.TextureLoader();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x111111);
+
+        var boxGeometry = new THREE.BoxGeometry(1,1,1);
+        var boxTexture = textureLoader.load("./logo.jpg");
+        var boxMaterial = new THREE.MeshPhongMaterial({color: 0x666666, map:boxTexture});
+        var box = new THREE.Mesh(boxGeometry, boxMaterial);
+        box.position.set(0,0,0);
+        scene.add(box)
+
+        var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);
+        scene.add(ambientLight);
+
+        var spotLight = new THREE.SpotLight(0xFFFFFF, 0.8);
+        spotLight.position.set(0,0,5);
+        scene.add(spotLight);
+        
+        $("#w").append(renderer.domElement);
+
+        camera.position.set(1,1,5);
+        camera.lookAt(scene.position);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            box.rotation.x += 0.01;
+            box.rotation.y -= 0.01;
+            box.rotation.z += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
