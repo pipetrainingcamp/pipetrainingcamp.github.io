@@ -236,5 +236,18 @@
         <a href="https://g3gy.mysxl.cn/" class="contact-info">G3工业网站</a>
         <a href="https://www.123684.com/s/sHDBvd-yKSKd">齐喜剧场</a>
     </footer>
+    <script>
+        function isMobileDevice() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            const mobileRegex = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|windows phone|phone|webos|kindle|tablet/i;
+            return mobileRegex.test(ua.toLowerCase());
+        }
+        // 示例调用
+        if (isMobileDevice()) {
+            window.location.href = "https://pipetrainingcamp.github.io/index_mobile.html";
+        } else {
+            window.location.href = "https://pipetrainingcamp.github.io/";
+        }
+    </script>
 </body>
 </html>
