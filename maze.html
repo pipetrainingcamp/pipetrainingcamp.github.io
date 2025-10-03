@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D迷宫游戏</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            font-family: Arial, sans-serif;
+        }
+        canvas { 
+            display: block; 
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background-color: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            max-width: 300px;
+            z-index: 100;
+        }
+        #win-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            background-color: rgba(0,0,0,0.9);
+            padding: 30px;
+            border-radius: 15px;
+            font-size: 28px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        #win-message button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #win-message button:hover {
+            background-color: #45a049;
+        }
+        #click-to-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            background-color: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">找到氰化钾就通过ヾ(๑╹◡╹)ﾉ"</div>
+    <div id="click-to-play">开始游戏<br/><img width="50" height="50" src="https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/f84616d62fc70151c51b3192ff9db395dda8d6455c39c121cd8c2ad91b1e4a8382af6b9f9f4c514de6da76a20b19f019?pictype=scale&from=30111&version=3.3.3.3&fname=up.jpg&size=1024"/></div>
+    <div id="win-message">恭喜你找到了氰化钾！<br><button onclick="resetGame()">再玩一次</button></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/PointerLockControls.js"></script>
+    
+    <script>
+        // 初始化场景、相机和渲染器
+        const scene = new THREE.Scene();
+        
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(2, 1.5, 2);
+        camera.rotation.y += -90;
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+        renderer.setClearColor(0x87CEEB);
+
+        var textureLoader = new THREE.TextureLoader();
+        
+        // 添加光源
+        const ambientLight = new THREE.AmbientLight(0x444444);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 10, 7);
+        directionalLight.castShadow = true;
+        scene.add(directionalLight);
+        
+        // 迷宫定义 (1表示墙，0表示通道)
+        const maze = [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 0, 1, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 1, 0, 1, 1],
+            [1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 2, 0, 1, 0, 1, 0, 0, 0, 1], // 2表示出口
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ];
+        
+        const wallMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xFFFFFF,
+            map:textureLoader.load("https://p2.ssl.qhimgs1.com/t0340f4501ce6b59dd2.jpg"),
+            roughness: 0.8,
+            metalness: 0.2
+        });
+        
+        const floorMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xFFFFFF,
+            map:textureLoader.load("https://p0.ssl.qhimgs1.com/t013f675f377846fcc4.jpg"),
+            roughness: 0.9,
+            metalness: 0.1
+        });
+        
+        const exitMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xFFFFFF,
+            map:textureLoader.load("https://pipetrainingcamp.github.io/kcn.jpg")
+        });
+        
+        // 创建迷宫
+        const wallSize = 2;
+        const wallHeight = 2;
+        const walls = [];
+        let exitMesh = null;
+        
+        function createMaze() {
+            // 创建地面
+            const groundGeometry = new THREE.PlaneGeometry(maze[0].length * wallSize, maze.length * wallSize);
+            const ground = new THREE.Mesh(groundGeometry, floorMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.x = maze[0].length * wallSize / 2 - wallSize / 2;
+            ground.position.z = maze.length * wallSize / 2 - wallSize / 2;
+            ground.receiveShadow = true;
+            scene.add(ground);
+            
+            // 创建墙壁
+            for (let z = 0; z < maze.length; z++) {
+                for (let x = 0; x < maze[0].length; x++) {
+                    if (maze[z][x] === 1) { // 墙
+                        const wallGeometry = new THREE.BoxGeometry(wallSize, wallHeight, wallSize);
+                        const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+                        wall.position.set(x * wallSize, wallHeight / 2, z * wallSize);
+                        wall.castShadow = true;
+                        wall.receiveShadow = true;
+                        scene.add(wall);
+                        walls.push(wall);
+                    } else if (maze[z][x] === 2) { // 出口
+                        const exitGeometry = new THREE.BoxGeometry(wallSize, wallHeight, wallSize);
+                        exitMesh = new THREE.Mesh(exitGeometry, exitMaterial);
+                        exitMesh.position.set(x * wallSize, wallHeight / 2, z * wallSize);
+                        exitMesh.castShadow = true;
+                        exitMesh.receiveShadow = true;
+                        scene.add(exitMesh);
+                    }
+                }
+            }
+        }
+        
+        createMaze();
+        
+        // 添加指针锁定控制
+        const controls = new THREE.PointerLockControls(camera, document.body);
+        
+        // 添加点击锁定指针的指令
+        const clickToPlay = document.getElementById('click-to-play');
+        const info = document.getElementById('info');
+        
+        clickToPlay.addEventListener('click', function() {
+            controls.lock();
+            clickToPlay.style.display = 'none';
+        });
+        
+        controls.addEventListener('lock', function() {
+            info.style.display = 'block';
+        });
+        
+        controls.addEventListener('unlock', function() {
+            info.style.display = 'none';
+            clickToPlay.style.display = 'block';
+        });
+        
+        // 键盘控制变量
+        const moveSpeed = 0.1;
+        const keys = {
+            w: false,
+            a: false,
+            s: false,
+            d: false
+        };
+        
+        // 键盘事件监听
+        document.addEventListener('keydown', (event) => {
+            switch (event.key.toLowerCase()) {
+                case 'w': keys.w = true; break;
+                case 'a': keys.a = true; break;
+                case 's': keys.s = true; break;
+                case 'd': keys.d = true; break;
+            }
+        });
+        
+        document.addEventListener('keyup', (event) => {
+            switch (event.key.toLowerCase()) {
+                case 'w': keys.w = false; break;
+                case 'a': keys.a = false; break;
+                case 's': keys.s = false; break;
+                case 'd': keys.d = false; break;
+            }
+        });
+        
+        // 窗口大小调整
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // 碰撞检测
+        function checkCollision(newPosition) {
+            const playerSize = 0.5;
+            
+            // 检查墙壁碰撞
+            for (const wall of walls) {
+                if (Math.abs(newPosition.x - wall.position.x) < wallSize/2 + playerSize &&
+                    Math.abs(newPosition.z - wall.position.z) < wallSize/2 + playerSize) {
+                    return true;
+                }
+            }
+            
+            // 检查边界
+            if (newPosition.x < 0 || newPosition.x > maze[0].length * wallSize ||
+                newPosition.z < 0 || newPosition.z > maze.length * wallSize) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        // 检查是否到达出口
+        function checkExit() {
+            if (!exitMesh) return false;
+            
+            const distance = camera.position.distanceTo(exitMesh.position);
+            return distance < wallSize;
+        }
+        
+        // 重置游戏
+        function resetGame() {
+            document.getElementById('win-message').style.display = 'none';
+            camera.position.set(2, 1.5, 2);
+            camera.rotation.set(0, 0, 0);
+            controls.unlock();
+        }
+        
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // 键盘控制移动
+            if (controls.isLocked) {
+                const direction = new THREE.Vector3();
+                
+                // 获取移动方向
+                if (keys.w) direction.z -= 1;
+                if (keys.s) direction.z += 1;
+                if (keys.a) direction.x -= 1;
+                if (keys.d) direction.x += 1;
+                
+                // 标准化方向向量并应用速度
+                direction.normalize();
+                direction.multiplyScalar(moveSpeed);
+                
+                // 根据相机朝向调整移动方向
+                direction.applyEuler(camera.rotation);
+                
+                // 检查碰撞
+                const newPosition = new THREE.Vector3().copy(camera.position).add(direction);
+                if (!checkCollision(newPosition)) {
+                    camera.position.add(direction);
+                }
+                
+                // 检查是否到达出口
+                if (checkExit()) {
+                    document.getElementById('win-message').style.display = 'block';
+                    controls.unlock();
+                }
+            }
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>
