@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>白菜</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="o"></div>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/OBJLoader.js"></script>
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        var ctrl = new THREE.OrbitControls(camera, renderer.domElement);
+        var textureLoader = new THREE.TextureLoader();
+        var objLoader = new THREE.OBJLoader();
+
+        renderer.setClearColor(0x111111);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        ctrl.update();
+
+        objLoader.load("cabbage.obj", (object) => {
+            object.position.set(0, -0.2, 0);
+            object.traverse((child) => {
+                child.material = new THREE.MeshPhongMaterial({color:0xFFFFFF, shininess: 200, map: textureLoader.load("texture.jpg")});
+            });
+            scene.add(object);
+        });
+
+        scene.add(new THREE.AmbientLight(0xFFFFFF, 0.2));
+        scene.add(new THREE.AxesHelper(1));
+
+        var spotLight = new THREE.SpotLight(0xFFFFFF, 0.2);
+        spotLight.position.set(0,0,3);
+        scene.add(spotLight);
+
+        camera.position.set(1,1,1);
+        camera.lookAt(scene.position);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        $("#o").append(renderer.domElement);
+
+        window.addEventListener("resize", () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
