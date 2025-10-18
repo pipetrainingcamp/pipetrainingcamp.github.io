@@ -31,15 +31,15 @@
         objLoader.load("cabbage.obj", (object) => {
             object.position.set(0, -0.2, 0);
             object.traverse((child) => {
-                child.material = new THREE.MeshPhongMaterial({color:0xFFFFFF, shininess: 200, map: textureLoader.load("texture.jpg")});
+                child.material = new THREE.MeshPhongMaterial({color:0xFFFFFF, shininess: 200, map: textureLoader.load("texture.jpg"), side: THREE.DoubleSide});
             });
             scene.add(object);
         });
 
-        scene.add(new THREE.AmbientLight(0xFFFFFF, 0.2));
+        scene.add(new THREE.AmbientLight(0xFFFFFF, 0.3));
         scene.add(new THREE.AxesHelper(1));
 
-        var spotLight = new THREE.SpotLight(0xFFFFFF, 0.2);
+        var spotLight = new THREE.SpotLight(0xFFFFFF, 0.3);
         spotLight.position.set(0,0,3);
         scene.add(spotLight);
 
@@ -62,4 +62,5 @@
         });
     </script>
 </body>
+
 </html>
