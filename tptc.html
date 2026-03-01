@@ -9,16 +9,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         body {
             background-color: #fafafa;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             color: #333;
             line-height: 1.6;
         }
 
-        /* 导航栏 */
+        /* 导航栏 - 修改为响应式结构 */
         nav {
             position: fixed;
             top: 0;
@@ -43,10 +43,18 @@
             font-size: 24px;
             font-weight: 700;
             color: #0066cc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 原有导航链接样式（桌面端显示） */
+        .nav-links {
+            display: flex;
+            gap: 30px;
         }
 
         .nav-links a {
-            margin-left: 30px;
             text-decoration: none;
             color: #333;
             font-weight: 500;
@@ -57,6 +65,72 @@
             color: #0066cc;
         }
 
+        /* 汉堡菜单按钮 - 默认隐藏，仅在移动端显示 */
+        .hamburger {
+            display: none; /* 默认隐藏 */
+            flex-direction: column;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 101;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* 移动端样式 */
+        @media (max-width: 768px) {
+            /* 汉堡按钮显示 */
+            .hamburger {
+                display: flex;
+            }
+
+            /* 隐藏桌面端导航 */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px; /* 导航栏高度 + 间距 */
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                padding: 10px 0;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+                border-radius: 0 0 10px 10px;
+                backdrop-filter: blur(5px);
+            }
+
+            /* 展开时的菜单样式 */
+            .nav-links.active {
+                display: flex;
+            }
+
+            /* 汉堡按钮动画 */
+            .hamburger.active .bar:nth-child(1) {
+                /* transform: rotate(-45deg) translate(-6px, 6px); */
+                opacity: 0;
+            }
+            .hamburger.active .bar:nth-child(3) {
+                /* transform: rotate(45deg) translate(-6px, -6px); */
+                opacity: 0;
+            }
+
+            /* 移动端菜单项样式 */
+            .nav-links a {
+                padding: 15px 20px;
+                margin: 0;
+                border-bottom: 1px solid #eee;
+            }
+        }
+
+        /* 保持原有的其他样式不变 */
         .btn {
             padding: 12px 30px;
             background: #0066cc;
@@ -67,6 +141,7 @@
             display: inline-block;
             transition: 0.3s;
         }
+        
         .btn-stop-sell {
             padding: 12px 30px;
             background: #808080;
@@ -78,16 +153,11 @@
             transition: 0.3s;
         }
 
-        .btn:hover {
+        .btn:hover, .btn-stop-sell:hover {
             background: #0052a3;
             transform: translateY(-2px);
         }
-        .btn-stop-sell:hover {
-            background: #606060;
-            transform: translateY(-2px);
-        }
 
-        /* 产品展示区 */
         .products {
             padding: 100px 20px;
             max-width: 1200px;
@@ -159,35 +229,52 @@
             margin-bottom: 15px;
         }
 
-        /* 页脚 */
         footer {
+            background-color: #003366;
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-bottom {
             text-align: center;
-            padding: 40px 20px;
-            background: #1a1a1a;
-            color: #fff;
-            margin-top: 80px;
-        }
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }   
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .nav-links a {
-                margin-left: 15px;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* 菜单容器的基础样式 */
+        /* 现有的角落数菜单样式保持不变 */
         .corner-menu {
-            position: fixed;      /* 关键：固定定位 */
-            bottom: 20px;         /* 距离视口底部 20px */
-            left: 20px;           /* 距离视口左侧 20px */
-            z-index: 1000;        /* 确保在最上层 */
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
         }
 
-        /* 菜单按钮样式 */
-        .menu-toggle {
+        .menu-toggle-corner {
             width: 40px;
             height: 40px;
             border: none;
@@ -198,7 +285,6 @@
             font-size: 18px;
         }
 
-        /* 菜单列表默认隐藏 */
         .menu-list {
             list-style: none;
             margin: 0;
@@ -207,13 +293,16 @@
             background: white;
             border: 1px solid #ddd;
             border-radius: 4px;
-            /* 设置最大高度并隐藏超出部分，为动画做准备 */
             max-height: 0;
             opacity: 0;
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
         }
 
-        /* 菜单项的链接样式 */
+        .menu-list.expanded {
+            max-height: 200px;
+            opacity: 1;
+        }
+
         .menu-list li a {
             display: block;
             padding: 10px 15px;
@@ -225,21 +314,24 @@
         .menu-list li a:hover {
             background-color: #f5f5f5;
         }
-
-        /* 当菜单展开时的样式类 */
-        .menu-list.expanded {
-            max-height: 200px;
-            opacity: 1;
-        }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-container">
-            <img src="image/tptc.png" width="60" height="26" />
             <div class="logo">
+                <img src="image/tptc.png" width="60" height="26" alt="Logo" />
                 Tech Popular True Create™
             </div>
+            
+            <!-- 汉堡按钮 -->
+            <button class="hamburger" aria-label="导航菜单">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            
+            <!-- 导航链接 -->
             <div class="nav-links">
                 <a href="index.html">网站主页</a>
                 <a href="uptc.html">UPTC - 产品</a>
@@ -298,7 +390,7 @@
     </section>
 
     <div class="corner-menu">
-        <button class="menu-toggle" id="menuToggle">G</button>
+        <button class="menu-toggle-corner" id="menuToggle">G</button>
         <ul class="menu-list" id="menuList">
             <li>
                 <a id="coin-data">💰 1145141919810 Good</a>
@@ -309,7 +401,9 @@
     </div>
 
     <footer>
-        <p>© 2026 Good Pipe Training Camp 版权所有</p>
+        <div class="footer-bottom">
+            <p>© 2026 Good Pipe Training Camp 版权所有</p>
+        </div>
     </footer>
 
     <script>
@@ -411,7 +505,15 @@
             window.open(website, "_blank");
         }
 
-        
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        // 添加点击事件监听器
+        hamburger.addEventListener('click', function() {
+            // 切换 active 类
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
     </script>
 </body>
 </html>

@@ -43,10 +43,18 @@
             font-size: 24px;
             font-weight: 700;
             color: #0066cc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 原有导航链接样式（桌面端显示） */
+        .nav-links {
+            display: flex;
+            gap: 30px;
         }
 
         .nav-links a {
-            margin-left: 30px;
             text-decoration: none;
             color: #333;
             font-weight: 500;
@@ -55,6 +63,26 @@
 
         .nav-links a:hover {
             color: #0066cc;
+        }
+
+        /* 汉堡菜单按钮 - 默认隐藏，仅在移动端显示 */
+        .hamburger {
+            display: none; /* 默认隐藏 */
+            flex-direction: column;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 101;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
         }
 
         /* 表单容器 */
@@ -163,6 +191,48 @@
                 margin-left: 15px;
                 font-size: 0.9rem;
             }
+
+            /* 汉堡按钮显示 */
+            .hamburger {
+                display: flex;
+            }
+
+            /* 隐藏桌面端导航 */
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px; /* 导航栏高度 + 间距 */
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                padding: 10px 0;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+                border-radius: 0 0 10px 10px;
+                backdrop-filter: blur(5px);
+            }
+
+            /* 展开时的菜单样式 */
+            .nav-links.active {
+                display: flex;
+            }
+
+            /* 汉堡按钮动画 */
+            .hamburger.active .bar:nth-child(1) {
+                /* transform: rotate(-45deg) translate(-6px, 6px); */
+                opacity: 0;
+            }
+            .hamburger.active .bar:nth-child(3) {
+                /* transform: rotate(45deg) translate(-6px, -6px); */
+                opacity: 0;
+            }
+
+            /* 移动端菜单项样式 */
+            .nav-links a {
+                padding: 15px 20px;
+                margin: 0;
+                border-bottom: 1px solid #eee;
+            }
         }
 
         /* 菜单容器的基础样式 */
@@ -226,6 +296,15 @@
             <div class="logo">
                 兑换码
             </div>
+            
+            <!-- 汉堡按钮 -->
+            <button class="hamburger" aria-label="导航菜单">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            
+            <!-- 导航链接 -->
             <div class="nav-links">
                 <a href="index.html">网站主页</a>
                 <a href="uptc.html">UPTC - 产品</a>
@@ -374,6 +453,16 @@
         function cancel() {
             document.getElementById('i').value = "";
         }
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        // 添加点击事件监听器
+        hamburger.addEventListener('click', function() {
+            // 切换 active 类
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
         
     </script>
 </body>
