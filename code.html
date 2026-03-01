@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兑换码</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0066cc;
+        }
+
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+
+        /* 表单容器 */
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 输入框样式 (复用之前的) */
+        .fancy-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            color: #333;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .fancy-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 4px rgba(99, 102, 241, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* 按钮通用基础样式 */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            margin: 10px 5px;
+            /* 阴影 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 主按钮：渐变风格 */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6654a9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* 次按钮：纯色风格 */
+        .btn-secondary {
+            background-color: #6366f1;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        /* 线框按钮：描边风格 */
+        .btn-outline {
+            background-color: transparent;
+            color: #374151;
+            border: 2px solid #d1d5db;
+        }
+        .btn-outline:hover {
+            color: #6366f1;
+            border-color: #6366f1;
+            transform: translateY(-2px);
+        }
+        .inputs {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #1a1a1a;
+            color: #fff;
+            margin-top: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .nav-links a {
+                margin-left: 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 菜单容器的基础样式 */
+        .corner-menu {
+            position: fixed;      /* 关键：固定定位 */
+            bottom: 20px;         /* 距离视口底部 20px */
+            left: 20px;           /* 距离视口左侧 20px */
+            z-index: 1000;        /* 确保在最上层 */
+        }
+
+        /* 菜单按钮样式 */
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* 菜单列表默认隐藏 */
+        .menu-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            /* 设置最大高度并隐藏超出部分，为动画做准备 */
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        /* 菜单项的链接样式 */
+        .menu-list li a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-list li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* 当菜单展开时的样式类 */
+        .menu-list.expanded {
+            max-height: 200px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                兑换码
+            </div>
+            <div class="nav-links">
+                <a href="index.html">网站主页</a>
+                <a href="uptc.html">UPTC - 产品</a>
+                <a href="tptc.html">TPTC - 程序</a>
+                <a href="https://space.bilibili.com/3546872910187364">UP主</a>
+            </div>
+        </div>
+    </nav>
+    
+    <section id="sb">
+        <div class="inputs">
+            <div class="form-container">
+                <!-- 示例输入框 -->
+                <input type="text" id="i" class="fancy-input" placeholder="请输入兑换码" />
+
+                <!-- 按钮组 -->
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="submit()" class="btn btn-primary">提交</button>
+                    <button onclick="cancel()" class="btn btn-outline">取消</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="corner-menu">
+        <button class="menu-toggle" id="menuToggle">G</button>
+        <ul class="menu-list" id="menuList">
+            <li>
+                <a id="coin-data">💰 1145141919810 Good</a>
+            </li>
+            <li><a href="code.html">兑换码</a></li>
+            <li><a id="signBtn" onclick="handleSignClick()">签到</a></li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>© 2026 Good Pipe Training Camp 版权所有</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const menuList = document.getElementById('menuList');
+
+            menuToggle.addEventListener('click', function() {
+                    menuList.classList.toggle('expanded');
+                });
+        });
+
+        // localStorage 初始化Good币数据
+        // 初始为300 Good币
+        const Good = {
+            coins: parseInt(localStorage.getItem('user_gold')) || 300
+        };
+
+        // 更新页面上的Good币显示
+        function updateCoinDisplay() {
+            const coinElement = document.getElementById('coin-data');
+            if (coinElement) {
+                coinElement.innerText = "💰 " + Good.coins + " Good";
+            }
+        }
+
+        function getToday() {
+            const today = new Date();
+            return today.toISOString().split('T')[0]; 
+        }
+
+        // 检查今天是否已签到
+        function checkInStatus() {
+            const today = getToday();
+            const record = localStorage.getItem('sign_record');
+            return record === today;
+        }
+
+        // 页面加载时初始化状态和Good币显示
+        window.addEventListener('load', function() {
+            // 更新Good币显示
+            updateCoinDisplay();
+            
+            // 更新签到按钮状态
+            const signBtn = document.getElementById('signBtn');
+            if (!signBtn) return;
+
+            if (checkInStatus()) {
+                signBtn.innerText = '今日已签到';
+                signBtn.disabled = true;
+            } else {
+                signBtn.innerText = '点击签到';
+            }
+        });
+
+        // 存入Good币数据
+        function handleSignClick() {
+            // 双重检查，防止脚本被绕过
+            if (checkInStatus()) {
+                //？？
+                return;
+            }
+
+            const today = getToday();
+            
+            // 1. 增加Good币
+            Good.coins += 100;
+            
+            // 保存数据到 localStorage (关键步骤)
+            localStorage.setItem('user_gold', Good.coins); // 保存Good币
+            localStorage.setItem('sign_record', today);   // 保存签到日期
+
+            // 提示用户
+            alert('每日签到送100 Good币');
+
+            // 更新界面
+            document.getElementById('signBtn').innerText = '今日已签到';
+            document.getElementById('signBtn').disabled = true;
+            
+            // 更新金币显示
+            updateCoinDisplay();
+        }
+        
+        function submit() {
+            // 获取信息
+            var inf = md5(document.getElementById('i').value);
+
+            alert(inf);
+
+            codes = {
+                one : "0c50e808685e8e9f6820fef7202d1aad", 
+                two : "49cf7d800dbfca5db289318488e2f433",
+                three : "e1674cedfda6216a8b4a5607731e379d", 
+            }
+
+            if (inf == codes.one) {
+                window.open("https://space.bilibili.com/3546872910187364", "_blank");
+            } else if (inf == codes.two) {
+                window.open("https://space.bilibili.com/345281727", "_blank");
+            } else if (inf == codes.three) {
+                Good.coins += 100;
+                localStorage.setItem('user_gold', Good.coins); 
+                updateCoinDisplay();
+                delete Good.three;
+            }
+        }
+
+        function cancel() {
+            document.getElementById('i').value = "";
+        }
+        
+    </script>
+</body>
+</html>

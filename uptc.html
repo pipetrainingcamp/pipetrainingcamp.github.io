@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPTC - 产品</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0066cc;
+        }
+
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .btn-stop-sell {
+            padding: 12px 30px;
+            background: #808080;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #0052a3;
+            transform: translateY(-2px);
+        }
+        .btn-stop-sell:hover {
+            background: #606060;
+            transform: translateY(-2px);
+        }
+
+        /* 产品展示区 */
+        .products {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #1a1a1a;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-price {
+            color: #0066cc;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #1a1a1a;
+            color: #fff;
+            margin-top: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .nav-links a {
+                margin-left: 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 菜单容器的基础样式 */
+        .corner-menu {
+            position: fixed;      /* 关键：固定定位 */
+            bottom: 20px;         /* 距离视口底部 20px */
+            left: 20px;           /* 距离视口左侧 20px */
+            z-index: 1000;        /* 确保在最上层 */
+        }
+
+        /* 菜单按钮样式 */
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* 菜单列表默认隐藏 */
+        .menu-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            /* 设置最大高度并隐藏超出部分，为动画做准备 */
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        /* 菜单项的链接样式 */
+        .menu-list li a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-list li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* 当菜单展开时的样式类 */
+        .menu-list.expanded {
+            max-height: 200px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <img src="image/uptc.jpg" width="50" height="50" />
+            <div class="logo">
+                Unusual Practical Tools Company™
+            </div>
+            <div class="nav-links">
+                <a href="index.html">网站主页</a>
+                <a href="uptc.html">UPTC - 产品</a>
+                <a href="tptc.html">TPTC - 程序</a>
+                <a href="https://space.bilibili.com/3546872910187364">UP主</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="products">
+        <h2>产品</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/gwxtj.jpg" alt="高温洗铜机">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">高温洗铜机</h3>
+                    <p class="product-price">- Good</p>
+                    <p class="product-desc">会排放一氧化碳与二氧化碳，污染严重，已停止出售。</p>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV15oWGzKEJr?spm_id_from=333.788.videopod.sections&vd_source=0a1241993eca2c50e6b2f0046bb019a2" class="btn">观看视频</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/ryzlj.jpg" alt="溶液蒸馏机一代">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">溶液蒸馏机一代</h3>
+                    <p class="product-price">30 Good</p>
+                    <p class="product-desc">觉得高温可以使用酒精灯加热，没必要用酒精喷灯。第一次做蒸馏机，蒸馏速度不是很快。</p>
+                    <a target="_blank" class="btn" onclick="buy(30, 'https://www.123865.com/s/sHDBvd-Qs7Kd')">点击下载</a>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1bDpXzBELp?spm_id_from=333.788.videopod.sections&vd_source=0a1241993eca2c50e6b2f0046bb019a2" class="btn">观看视频</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/ryzlj2.jpg" alt="溶液蒸馏机二代" />
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">溶液蒸馏机二代</h3>
+                    <p class="product-price">60 Good</p>
+                    <p class="product-desc">采用氢气加热，蒸馏速度加快。使用氢气时需小心。</p>
+                    <a target="_blank" class="btn" onclick="buy(60, 'https://www.123865.com/s/sHDBvd-xs7Kd')">点击下载</a>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1cGnnztEuW?spm_id_from=333.788.videopod.sections&vd_source=0a1241993eca2c50e6b2f0046bb019a2" class="btn">观看视频</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/ydy.jpg" alt="银钉液">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">银钉液</h3>
+                    <p class="product-price">35 Good</p>
+                    <p class="product-desc">不是自主研发的产品，但是这里便宜，也很好用，值了！</p>
+                    <a target="_blank" class="btn" onclick="buy(35, 'https://www.123865.com/s/sHDBvd-as7Kd')">点击下载</a>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1NrHPztEyb?spm_id_from=333.788.videopod.sections&vd_source=0a1241993eca2c50e6b2f0046bb019a2" class="btn">观看视频</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/bmb.jpg" alt="白面包">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">白面包（粉）</h3>
+                    <p class="product-price">10 Good</p>
+                    <p class="product-desc">UPTC的美食。入口香醇，有奶香，入口即化，特别好吃。</p>
+                    <a target="_blank" class="btn" onclick="buy(10, 'https://www.123865.com/s/sHDBvd-ps7Kd')">点击下载</a>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1XinfzsEeU/?spm_id_from=333.1387.upload.video_card.click" class="btn">观看视频</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/hbmb.jpg" alt="黑白面包">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">黑白面包</h3>
+                    <p class="product-price">5 Good</p>
+                    <p class="product-desc"><a style="text-decoration-line: none; color: #65b2ff;" href="https://space.bilibili.com/3494351330085303">
+                            @骁龙是条龙
+                        </a>
+                            的杰作，混合了白面包与黑面包，既有黑面包的美味，也有白面包的奶香。
+                    </p>
+                    <a target="_blank" class="btn" onclick="buy(5, 'https://www.123865.com/s/sHDBvd-fs7Kd')">点击下载</a>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1jMnqzNE93/?spm_id_from=333.1387.upload.video_card.click" class="btn">观看视频</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/mnn.jpg" alt="迷你钠">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">迷你钠</h3>
+                    <p class="product-price">5 Good</p>
+                    <p class="product-desc">
+                        迷你版的钠，加稀硫酸稀盐酸里直接瞬爆，超级好玩的玩意儿！
+                    </p>
+                    <a target="_blank" class="btn" onclick="buy(5, 'https://www.123865.com/s/sHDBvd-4s7Kd')">点击下载</a>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1BaxDz9Eq9/?spm_id_from=333.1387.search.video_card.click&vd_source=0a1241993eca2c50e6b2f0046bb019a2" class="btn">观看视频</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="corner-menu">
+        <button class="menu-toggle" id="menuToggle">G</button>
+        <ul class="menu-list" id="menuList">
+            <li>
+                <a id="coin-data">💰 114514191910 Good</a>
+            </li>
+            <li><a href="code.html">兑换码</a></li>
+            <li><a id="signBtn" onclick="handleSignClick()">签到</a></li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>© 2026 Good Pipe Training Camp 版权所有</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menuToggle');
+        const menuList = document.getElementById('menuList');
+
+        menuToggle.addEventListener('click', function() {
+                menuList.classList.toggle('expanded');
+            });
+        });
+
+        // localStorage 初始化Good币数据
+        // 初始为300 Good币
+        const Good = {
+            coins: parseInt(localStorage.getItem('user_gold')) || 300
+        };
+
+        // 更新页面上的Good币显示
+        function updateCoinDisplay() {
+            const coinElement = document.getElementById('coin-data');
+            if (coinElement) {
+                coinElement.innerText = "💰 " + Good.coins + " Good";
+            }
+        }
+
+        // function getToday() {
+        //     const today = new Date();
+        //     return today.toISOString().split('T')[0]; 
+        // }
+
+        // 检查今天是否已签到
+        function getToday() {
+            const today = new Date();
+            
+            // 关键修复：获取时区偏移量（单位是分钟）
+            // getTimezoneOffset() 返回的是本地时间与 UTC 的差值
+            // 例如：东八区返回 -480，我们需要加上这 480 分钟
+            const offsetMs = today.getTimezoneOffset() * 60 * 1000; // 转换为毫秒
+            
+            // 计算本地时间的毫秒数
+            const localTime = new Date(today.getTime() - offsetMs);
+            
+            // 格式化为 YYYY-MM-DD
+            return localTime.toISOString().split('T')[0];
+        }
+        function checkInStatus() {
+            const today = getToday();
+            const record = localStorage.getItem('sign_record');
+            return record === today;
+        }
+
+        // 页面加载时初始化状态和Good币显示 ===
+        window.addEventListener('load', function() {
+            // 更新Good币显示
+            updateCoinDisplay();
+            
+            // 更新签到按钮状态
+            const signBtn = document.getElementById('signBtn');
+            if (!signBtn) return;
+
+            if (checkInStatus()) {
+                signBtn.innerText = '今日已签到';
+                signBtn.disabled = true;
+            } else {
+                signBtn.innerText = '点击签到';
+            }
+        });
+
+        // 存入Good币数据
+        function handleSignClick() {
+            // 双重检查，防止脚本被绕过
+            if (checkInStatus()) {
+                //？？
+                return;
+            }
+
+            const today = getToday();
+            
+            // 1. 增加Good币
+            Good.coins += 100;
+            
+            // 保存数据到 localStorage (关键步骤)
+            localStorage.setItem('user_gold', Good.coins); // 保存Good币
+            localStorage.setItem('sign_record', today);   // 保存签到日期
+
+            // 提示用户
+            alert('每日签到送100 Good币');
+
+            // 更新界面
+            document.getElementById('signBtn').innerText = '今日已签到';
+            document.getElementById('signBtn').disabled = true;
+            
+            // 更新金币显示
+            updateCoinDisplay();    
+        }
+        function buy(coin, website) {
+            if (Good.coins < coin) {
+                alert("没钱了哦");
+                return;
+            }
+
+            const confirmBuy = confirm(`确定要花费 ${coin} Good币购买吗？`);
+            if (!confirmBuy) {
+                return;
+            }
+
+            Good.coins -= coin;
+
+            localStorage.setItem('user_gold', Good.coins); // 保存Good币
+            updateCoinDisplay(); // 更新Good币显示
+            
+            window.open(website, "_blank");
+        }
+
+        
+    </script>
+</body>
+</html>

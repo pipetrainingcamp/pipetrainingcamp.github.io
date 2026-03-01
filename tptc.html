@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPTC - 程序</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0066cc;
+        }
+
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .btn-stop-sell {
+            padding: 12px 30px;
+            background: #808080;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #0052a3;
+            transform: translateY(-2px);
+        }
+        .btn-stop-sell:hover {
+            background: #606060;
+            transform: translateY(-2px);
+        }
+
+        /* 产品展示区 */
+        .products {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #1a1a1a;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-price {
+            color: #0066cc;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #1a1a1a;
+            color: #fff;
+            margin-top: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .nav-links a {
+                margin-left: 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 菜单容器的基础样式 */
+        .corner-menu {
+            position: fixed;      /* 关键：固定定位 */
+            bottom: 20px;         /* 距离视口底部 20px */
+            left: 20px;           /* 距离视口左侧 20px */
+            z-index: 1000;        /* 确保在最上层 */
+        }
+
+        /* 菜单按钮样式 */
+        .menu-toggle {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* 菜单列表默认隐藏 */
+        .menu-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            /* 设置最大高度并隐藏超出部分，为动画做准备 */
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        /* 菜单项的链接样式 */
+        .menu-list li a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-list li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* 当菜单展开时的样式类 */
+        .menu-list.expanded {
+            max-height: 200px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <img src="image/tptc.png" width="60" height="26" />
+            <div class="logo">
+                Tech Popular True Create™
+            </div>
+            <div class="nav-links">
+                <a href="index.html">网站主页</a>
+                <a href="uptc.html">UPTC - 产品</a>
+                <a href="tptc.html">TPTC - 程序</a>
+                <a href="https://space.bilibili.com/3546872910187364">UP主</a>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="products">
+        <h2>程序</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://i1.hdslb.com/bfs/archive/bc121e5485b1ac69e48e9ee207ada027f7d4a7f3.jpg" alt="G3×Eug地铁">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">G3×Eug地铁</h3>
+                    <p class="product-price">0 Good</p>
+                    <p class="product-desc">由于
+                        <a style="text-decoration-line: none; color: #65b2ff;" href="https://www.bilibili.com/video/BV1PkeZzzEnW/?spm_id_from=333.1387.search.video_card.click">
+                            3L倒闭
+                        </a>，3L地铁被G3和Eug继承，所以做了这个软件。免费。</p>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1U7hkzfEbv/?spm_id_from=333.1387.list.card_archive.click&vd_source=0a1241993eca2c50e6b2f0046bb019a2" class="btn">观看视频</a>
+                    <a target="_blank" class="btn" href="https://www.123684.com/s/sHDBvd-LUSKd">点击下载</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/5udkbzy.jpg" alt="5U的恐怖之夜">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">5Uの恐怖の夜</h3>
+                    <p class="product-price">0 Good</p>
+                    <p class="product-desc">脑子抽了做的一款游戏，特别吓人，突脸声音极大，重口味游戏，心脏病、耳机党慎入！</p>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1c2yZBVEzL/?spm_id_from=333.1387.0.0" class="btn">观看视频</a>
+                    <a target="_blank" href="https://www.123865.com/s/sHDBvd-9s7Kd" class="btn">点击下载</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://i1.hdslb.com/bfs/archive/8a9cbaf34c5def4e4e7179a46183960d84b88804.jpg" alt="3L地铁老版本">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">3L地铁老版本</h3>
+                    <p class="product-price">0 Good</p>
+                    <p class="product-desc">好久以前做的，这时候的包名还是com.threelurbbrground.apk，可以给老粉丝回忆一下。</p>
+                    <a target="_blank" href="https://www.bilibili.com/video/BV1c2yZBVEzL/?spm_id_from=333.1387.0.0" class="btn">观看视频</a>
+                    <a target="_blank" href="https://www.123865.com/s/sHDBvd-Bs7Kd" class="btn">点击下载</a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <div class="corner-menu">
+        <button class="menu-toggle" id="menuToggle">G</button>
+        <ul class="menu-list" id="menuList">
+            <li>
+                <a id="coin-data">💰 1145141919810 Good</a>
+            </li>
+            <li><a href="code.html">兑换码</a></li>
+            <li><a id="signBtn" onclick="handleSignClick()">签到</a></li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>© 2026 Good Pipe Training Camp 版权所有</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menuToggle');
+        const menuList = document.getElementById('menuList');
+
+        menuToggle.addEventListener('click', function() {
+                menuList.classList.toggle('expanded');
+            });
+        });
+
+        // localStorage 初始化Good币数据
+        // 初始为300 Good币
+        const Good = {
+            coins: parseInt(localStorage.getItem('user_gold')) || 300
+        };
+
+        // 更新页面上的Good币显示
+        function updateCoinDisplay() {
+            const coinElement = document.getElementById('coin-data');
+            if (coinElement) {
+                coinElement.innerText = "💰 " + Good.coins + " Good";
+            }
+        }
+
+        function getToday() {
+            const today = new Date();
+            return today.toISOString().split('T')[0]; 
+        }
+
+        // 检查今天是否已签到
+        function checkInStatus() {
+            const today = getToday();
+            const record = localStorage.getItem('sign_record');
+            return record === today;
+        }
+
+        // 页面加载时初始化状态和Good币显示 ===
+        window.addEventListener('load', function() {
+            // 更新Good币显示
+            updateCoinDisplay();
+            
+            // 更新签到按钮状态
+            const signBtn = document.getElementById('signBtn');
+            if (!signBtn) return;
+
+            if (checkInStatus()) {
+                signBtn.innerText = '今日已签到';
+                signBtn.disabled = true;
+            } else {
+                signBtn.innerText = '点击签到';
+            }
+        });
+
+        // 存入Good币数据
+        function handleSignClick() {
+            // 双重检查，防止脚本被绕过
+            if (checkInStatus()) {
+                //？？
+                return;
+            }
+
+            const today = getToday();
+            
+            // 1. 增加Good币
+            Good.coins += 100;
+            
+            // 保存数据到 localStorage (关键步骤)
+            localStorage.setItem('user_gold', Good.coins); // 保存Good币
+            localStorage.setItem('sign_record', today);   // 保存签到日期
+
+            // 提示用户
+            alert('每日签到送100 Good币');
+
+            // 更新界面
+            document.getElementById('signBtn').innerText = '今日已签到';
+            document.getElementById('signBtn').disabled = true;
+            
+            // 更新金币显示
+            updateCoinDisplay();
+        }
+        function buy(coin, website) {
+            if (Good.coins < coin) {
+                alert("没钱了哦");
+                return;
+            }
+
+            const confirmBuy = confirm(`确定要花费 ${coin} Good币购买吗？`);
+            if (!confirmBuy) {
+                return;
+            }
+
+            Good.coins -= coin;
+
+            localStorage.setItem('user_gold', Good.coins); // 保存Good币
+            updateCoinDisplay(); // 更新Good币显示
+            
+            window.open(website, "_blank");
+        }
+
+        
+    </script>
+</body>
+</html>

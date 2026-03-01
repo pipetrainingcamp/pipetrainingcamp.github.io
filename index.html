@@ -1,1 +1,187 @@
 <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoodPTC网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0066cc;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #0066cc;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #0052a3;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 36px;
+            color: #1a1a1a;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .about-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .about-text p {
+            margin-bottom: 15px;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        footer {
+            background: #1a1a1a;
+            color: #fff;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .footer-content p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">GoodPTC</div>
+                <ul class="nav-links">
+                    <li><a href="">网站主页</a></li>
+                    <li><a href="uptc.html">UPTC - 产品</a></li>
+                    <li><a href="tptc.html">TPTC - 程序</a></li>
+                    <li><a href="https://space.bilibili.com/3546872910187364">UP主</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">公司简介</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Good Pipe Training Camp</h3>
+                    <p>由PracTiCal-成立于2025年6月8日，那时候因为UNS倒闭，做管道洗钉机和样品洗钉液。</p>
+                    <p>之后成立Unusual Practical Tools Company（UPTC），生产更多的产品。</p>
+                    <p>然后成立Tech Popular True Create（TPTC），制作某些诡异的游戏。</p>
+                </div>
+                <div>
+                    <img src="image/logo.jpg" alt="GoodPTC" style="width: 100%; border-radius: 8px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2026 Good Pipe Training Camp 版权所有</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
