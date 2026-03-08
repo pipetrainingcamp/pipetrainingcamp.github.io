@@ -1,364 +1,439 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5U公司的官网</title>
-    <link rel="icon" href="/picof5u/logo.jpg" type="image/x-icon">
-    <style>
-        /* 基础样式重置 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
-        }
-        
-        body {
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        /* 头部导航 */
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px  0;
+<html>
+<!--孩子们我并不是代码-->
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5U的练习网站</title>
+  <style>
+    /*没想到吧，css也有注释*/
+    h1{
+      color: red;
+    }
+    .i{
+      background: blue;
+    }
+    #o{
+      font-size: 35px;
+    }
+    body{
+      font-family: "Kaiti";
+    }
+    .ui>.uo{
+      font-weight: bolder;
+    }
+    .ui .oi{
+      color: seagreen;
+      font-size: larger;
+    }
+    .uio{
+      color: yellowgreen
+    }
+    #hhh:hover{
+      background: purple
+    }
+    .hhh:hover {
+      color: darkcyan
+    }
+    .box{
+      background: gold;
+      width:150px;
+      height: 150px;
+    }
+    .xod{
+      background: brown
+    }
+    .xob{
+      background: burlywood
+    }
+    .xci{
+      background: cornflowerblue
+    }
+    .demo{
+      background: aquamarine;
+      display: inline-block;
+      border:3px dotted lightsteelblue
+    }
+    .update{
+      background: navy;
+      width: 300px;
+      height: 200px;
+      border-style: double dotted solid dashed;
+      border-width: 8px 6px 7px 9px;
+      border-color: blueviolet violet olive navajowhite;
+      padding: 90px;
+      margin: 40px
+      }
+    .h{
+        background: lime;
+        height: 160px;
+        width: 170px;
+        border-top: 10px forestgreen dashed;
+        border-left: 11px pink dashed;
+        border-right: 9px gray dotted;
+        border-bottom: 10px yellowgreen dotted;
+      }
+    .hh{
+        background: black;
+        height: 150px;
+        width: 140px;
+        border-top-color: blanchedalmond;
+        border-top-style: solid;
+        border-top-width: 7px;
+        border-left-color: darkturquoise;
+        border-left-style: solid;
+        border-left-width: 8px;
+        border-right-color: forestgreen;
+        border-right-style: double;
+        border-right-width: 6px;
+        border-bottom-color:blue;
+        border-bottom-style: double;
+        border-bottom-width: 7px;
+      }
+    .hhhh{
+        color: wheat;
+        height: 150px;
+        width: 70px;
+        padding: 50px;
+      }
+    .date{
+      background: paleturquoise;
+      height:170px;
+      border: darkblue 3px dashed;
+    }
+    .date::after{
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .data{
+      width: 100px;
+      height: 100px;
+      background: purple;
+      margin: 50px;
+      float: left;
+    }
+    .datu{
+      width: 100px;
+      height: 100px;
+      background: peru;
+      margin: 50px;
+      float: right;
+    }
+    .box1{
+      height: 350px;
+      background: cadetblue;
+    }
+    .box-n{
+      width: 100px;
+      height: 100px;
+      background: coral
+    }
+    .box-r{
+      width: 100px;
+      height: 100px;
+      background: olive;
+      position: relative;
+      left: 20px;
+      top: 40px;
+    }
+    .box2{
+      height: 300px;
+      background: yellowgreen;
+    }
+    .box-a{
+      width: 100px;
+      height: 100px;
+      background: lightseagreen;
+      position: absolute;
+      left: 150px;
+    }
+    .box-f{
+      width: 100px;
+      height: 100px;
+      background: teal;
+      position: fixed;
+      top: 80px;
+      right: 60px
+    }
+    .uuuuu{
+      margin: 40px;
+      color: paleturquoise;
+    }
+    table{
+      width:100%;
+      margin-top:15px;
+    }
+    td,th{
+      text-align:center
+    }
+  </style>
+ </head>
 
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #0066cc;
-        }
-        
-        .nav-menu {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-menu li {
-            margin-left: 30px;
-        }
-        
-        .nav-menu a {
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-menu a:hover {
-            color: #0066cc;
-        }
-        
-        /* 英雄区域 */
-        .hero {
-            background: #333;
-            color:#FFFFFF;
-            padding: 150px 0 100px;
-            text-align: center;
-            margin-top: 60px;
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: #ff6600;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        
-        .btn:hover {
-            background-color: #e65c00;
-        }
-
-        /* 产品展示 */
-        .products {
-            background-color: #f8f9fa;
-        }
-        
-        .product-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #e65c00;
-            color: white;
-            text-align: center;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top:2px;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .product-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .product-image {
-            height: 200px;
-            overflow: hidden;
-        }
-        
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        
-        .product-card:hover .product-image img {
-            transform: scale(1.1);
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .product-info h3 {
-            margin-bottom: 10px;
-            color: #0066cc;
-        }
-        
-        /* 页脚 */
-        footer {
-            background-color: #003366;
-            color: white;
-            padding: 50px 0 20px;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-column {
-            flex: 1;
-            min-width: 200px;
-        }
-        
-        .footer-column h3 {
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .about-text, .about-image {
-                padding: 0;
-                margin-bottom: 30px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- 头部导航 -->
-    <header>
-        <div class="container nav-container">
-            <img src="/picof5u/logo.jpg" width="50" height="50"/>
-            <div class="logo">
-                5U公司
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home">首页</a></li>
-                <li><a href="#products">产品</a></li>
-                <li><a href="#ftr">其他网站</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <!-- 电子化学区域 -->
-    <section class="hero" id="home">
-        <div class="container">
-            <h1>5U公司</h1>
-            <p>全称Unusual Unmixing Units Upgrade Unstablelychemicals，U 235，234，236，237，238也是5U的意思。</p>
-            <a href="#products" class="btn">探索产品</a>
-        </div>
-    </section>
-
-    <!-- 产品展示 -->
-    <section class="section products" style="margin-top: 20px;margin-bottom: 20px;" id="products">
-        <div class="container">
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/picof5u/rrt.jpg" alt="熔融铁"/>
-                    </div>
-                    <div class="product-info">
-                        <h3>熔融铁</h3>
-                        <p>熔融的铁。(*╹▽╹*)</p>
-                        <a target="_blank" href="https://s.nobook.com/index.html?id=215431"><button class="product-btn">体验</button></a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/picof5u/yq.jpg" alt="液氢">
-                    </div>
-                    <div class="product-info">
-                        <h3>液氢</h3>
-                        <p>液态的氢气。๑乛◡乛๑</p>
-                        <a target="_blank" href="https://www.bilibili.com/video/BV1WFhNz2EeS/?spm_id_from=333.1387.collection.video_card.click&vd_source=0a1241993eca2c50e6b2f0046bb019a2"><button class="product-btn">观看视频</button></a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/picof5u/btgt.jpg" alt="补铁高汤">
-                    </div>
-                    <div class="product-info">
-                        <h3>补铁高汤</h3>
-                        <p>很补铁，适合贫血患者！(✪ω✪)</p>
-                        <a target="_blank" href=""><button class="product-btn">观看视频</button></a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/picof5u/hj.jpg" alt="红酒"/>
-                    </div>
-                    <div class="product-info">
-                        <h3>红酒</h3>
-                        <p>美容养颜、抗衰老必备！O(＾－＾)</p>
-                        <a target="_blank" href="https://www.bilibili.com/video/BV1mohbzRExA?spm_id_from=333.788.videopod.sections&vd_source=0a1241993eca2c50e6b2f0046bb019a2"><button class="product-btn">观看视频</button></a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/picof5u/hhn.jpg" alt="氦化钠"/>
-                    </div>
-                    <div class="product-info">
-                        <h3>氦化钠</h3>
-                        <p>H2SO_NaCl要求做的。ψ(*｀ー´)ψ</p>
-                        <a target="_blank" href="https://www.bilibili.com/video/BV1gahTzYEFf?spm_id_from=333.788.videopod.sections&vd_source=0a1241993eca2c50e6b2f0046bb019a2"><button class="product-btn">观看视频</button></a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/picof5u/ytyq.jpg" alt="液态氧气"/>
-                    </div>
-                    <div class="product-info">
-                        <h3>液态氧气</h3>
-                        <p>液态的氧气。ヾ(๑╹◡╹)ﾉ"</p>
-                        <a target="_blank" href="https://www.bilibili.com/video/BV1PUhuz8Epu?spm_id_from=333.788.videopod.sections&vd_source=0a1241993eca2c50e6b2f0046bb019a2"><button class="product-btn">观看视频</button></a>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="/picof5u/ljjc-001.jpg" alt="液态氧气"/>
-                    </div>
-                    <div class="product-info">
-                        <h3>料酒机&ensp;C-001</h3>
-                        <p>可以调一杯简单的红酒，搭配齐喜的厕所使用，喝多了方便吐里面。<img width="25px" height="25px" src="/picof5u/doge.png"/></p>
-                        <a target="_blank" href="https://s.nobook.com/index.html?id=215455"><button class="product-btn">体验</button></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer id="ftr">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>5U公司</h3>
-                    <p>有事找B站Up：<a target="_blank" style="color: skyblue;" href="https://space.bilibili.com/547282271">5Uの频道</a></p>
-                    <img src="/picof5u/dzhx.jpg" width="144" height="170" />
-                    <p>电子化学正脸</p>
-                </div>
-                <div class="footer-column">
-                    <h3>链接</h3>
-                    <ul>
-                        <li><a target="_blank" href="https://pipetrainingcamp.github.io/">GoodPTC官网</a></li>
-                        <li><a target="_blank" href="https://nailscrubber.github.io/">齐喜的网站</a></li>
-                        <li><a target="_blank" href="https://g3gy.mysxl.cn/">G3工业</a></li>
-                        <li><a target="_blank" href="https://yunmo-233.github.io/index.html">陨陌的网站</a></li>
-                        <li><a target="_blank" href="https://ndcgp.orgent.top/">Ndc(Vial)股票网站</a></li>
-                        <li><a target="_blank" href="https://nailscrubber.github.io/hengdian.html">电子化学的网站</a></li>
-                        <li><a target="_blank" href="./uwls.html">UwLS的网站</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 5U公司 保留所有权利</p>
-            </div>
-        </div>
-    </footer>
-</body>
-
+ <body>
+ 
+ <div class="u">
+  <h1>这是一级标题</h1>
+  <h2 class="i"> This is 2</h2>
+  <h3 id="o">这真的是三级标题，只是调了字体大小</h3>
+  <h4 style="font: bolder 20px">如你所见这已经是四了</h4>
+  <h5>最小就是五吗？</h5>
+  <h6>这个六已经最小了</h6>
+  <p>这是一段话，非常的普通</p>
+  <b>粗体字</b>
+  <strong>这是另一种粗体字</strong>
+  </br>
+  <i>斜体字</i>
+  <em>另一种斜体</em>
+  </br>
+  <u>下划线,看似重要其实不重要</u>
+  </br>
+  <s>这是不重要的文字已经被划掉了</s>
+  </br>
+  <ul>
+   <li>无序列表元素</li>
+  </ul>
+  <ol>
+   <li>芝士有序列表</li>
+  </ol>
+  <table border="4" id="tt">
+   <button onclick="addrow()">新增内容</button>
+   <tr>
+     <th>列标题</th>
+     <th>列标题2</th>
+     <th>列标题3</th>
+   </tr>
+   <tr>
+    <td>列</td>
+    <td>列2</td>
+    <td>列3</td>
+    <td><button onclick="deleterow (this)">删除</button></td>
+    <td><button onclick="editrow(this)">编辑</button></td>
+   </tr>
+  </table>
+  <p id="hhh">这个有Id</p>
+  <hr>
+  <p class="hhh">这个有class</p>
+  <a href="https://pan.quark.cn/s/a5bb55458c7c">植物大战僵尸嫁接版手机</a>
+   </br>
+  <a href="https://yun.daxiaamu.com/OnePlus_Roms/" target="_blank">大侠阿木一加刷机包</a>
+   <img src="/pp.jpeg" alt="404,重试"width="200" height="100">
+ </div>
+  <div class="nev">
+    <a href="#">这是一个没用的链接</a>
+  </div>
+  <span>行内标签</span>
+  <span>行内标签</span>
+  <span>行内标签</span>
+  </br>
+  <form action="#">
+   <label for="com">普通输入框</label>
+   <input type="text" id="com">
+   </br>
+   <label for="cn">有提示输入框</label>
+   <input type="text" placeholder="请输入文本" id="cn">
+   </br>
+   <label for="top">有例子输入框</label>
+   <input type="text" value="这是一个示例" id="top">
+   </br>
+   <label>前端三语言</label>
+   <input type="radio" name="hcj">html,css,js
+   <input type="radio" name="hcj">c,c++,c#
+   <input type="radio" name="hcj">py,sh,php
+    </br>
+    <input type="password" placeholder="这是密码输入框">
+    </br>
+    <label>以下哪些是变量类型</label>
+    <input type="checkbox" name="ifbsc">int
+    <input type="checkbox" name="ifbsc">float
+    <input type="checkbox" name="ifbsc">.java.util*
+    <input type="checkbox" name="ifbsc">using
+    <input type="checkbox" name="ifbsc">namespace
+    <input type="checkbox" name="ifbsc">bool
+    <input type="checkbox" name="ifbsc">string
+    <input type="checkbox" name="ifbsc">char
+     </br>
+    <input type="submit" value="毛用没有的按钮">
+  </form>
+  <div class="ui">
+    <marquee class="uo">被遗忘的跑马灯</marquee>
+    <div class="io">
+      <p class="oi">uuu</p>
+    </div>
+  </div>
+  <p class="uio">很普通的p</p>
+  <h5>↑兄弟</h5>
+  <p class="uio">也普通的p</p>
+  <p style="line-height: 50px">很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的文本</p>
+  <div class="box">一个块</div>
+  <span class="xod">一整行不算很长但确实挺长的Span文字</span>
+  </br>
+  <img src="/pp.jpg" alt="404404404404404404404" width="40px" height="40px">
+  </br>
+  <div class="xob" style="display: inline">你猜我是块还是行</div>
+  <span class="xci" style="display: block">你猜我是行还是块</span>
+  <div class="demo">你不会以为只有边框吧?不,这里还有文本</div>
+  <div class="update">用来展示边框的</div>
+  <div class="h">uuuuu</div>
+  <div class="hh">
+    <div class="hhhh">5u</div>
+  </div>
+  <div class="date">
+    <div class="data">左浮动</div>
+    <div class="datu">右浮动</div>
+    <p>文字文字文字文字文字文字文字</p>
+  </div>
+  <div class="box1">
+    <div class="box-n"></div>
+    <div class="box-r"></div>
+    <div class="box-n"></div>
+  </div>
+  <div class="box2">
+    <div class="box-n"></div>
+    <div class="box-a"></div>
+    <div class="box-n"></div>
+  </div>
+  <div class="box-f">
+    <marquee class="uuuuu">5U</marquee>
+  </div>
+  <button onclick="ShowAlert()">这个按钮真的有用</button>
+  <input type="text" onfocus="Same()" onblur="trip()">
+  <div id="uuuu">Id选择div</div>
+  <div class="uuuuuu">类名选择div</div>
+  <div>
+    非常普通一个div
+  </div>
+  <button>看什么看，只是个按钮</button>
+  <button>真的只是按钮</button>
+  <script>var x
+    let y=5
+    const pi=3.14
+    console.log(x)
+    console.log(y)
+    console.log(pi)
+    let text="hhhh"
+    let txt=null
+    console.log(text)
+    console.log(txt)
+    // This is一个注释
+    let age=18
+    if (age<18) {
+      console.log("你是未成年")
+    }
+    else{
+      console.log("你已成年")
+    }
+    let time=22
+    if (time<12) {
+      alert("上午好")
+    }
+    else if (time<18) {
+      alert("下午好")
+    }
+    else{
+      alert("晚上好")
+    }
+    for (let i=1; i<11;i++){
+      console.log(i)
+    }
+    let o=0.01
+    while (o<10){
+      console.log(o)
+      o++
+    }
+    for(var u=0; u<7;u++){
+      if (u==2) {
+        continue
+      }
+      if (u==6) {
+        break
+      }
+      console.log(u)
+    }
+    function halo(){
+      console.log("hellow,word")
+    }
+    halo()
+    function hllow(){
+      return 'e'
+    }
+    let z=hllow()
+    console.log(z)
+    function name(space){
+      console.log("hellow,", space)
+    }
+    name("std")
+    function er(util){
+      return util+1
+    }
+    console.log(er(0.2))
+    var w="global_var"
+    function varlet(){
+      let v="local_let"
+      console.log(w)
+      console.log(v)
+    }
+    varlet()
+    function ShowAlert(){
+      prompt("竟然真的有人信了,你的年龄↓😅")
+    }
+    function Same(){
+      alert("llewelyn")
+    }
+    function trip(){
+      alert("isvip")
+    }
+    var ids=document.getElementById("uuuu")
+    console.log(ids)
+    var classes=document.getElementsByClassName("uuuuuu")[0]
+    console.log(classes)
+    var tags=document.getElementsByTagName("div")[26]
+    console.log(tags)
+    ids.innerHTML="哈哈，这个文本被我修改了"
+    classes.innerText="这个也是"
+    var button_element=document.getElementsByTagName("button")[4]
+    let button_Tag=document.getElementsByTagName("button")[5]
+    button_element.onclick=function(){
+      alert("Dom点击事件触发了，如你所见，弹了个弹窗")
+    }
+    button_Tag.addEventListener("click",function(){
+      alert("其实这是另一个dom点击事件")
+    })
+    function addrow() {
+      var tb= document.getElementById('tt');
+      //console.log(tt)
+      var length = tb.rows.length;
+      //console.log(length)
+      var uio = tb.insertRow(length);
+      //console.log(uio);
+      //uio.innerHTML = '1234567';
+      var namelocal = uio.insertCell(0);
+      var phonelocal = uio.insertCell(1);
+      var actionlocal = uio.insertCell(2);
+      var localcol = uio.insertCell(3);
+      //console.log(uio)
+      namelocal.innerHTML = '未命名'
+      phonelocal.innerHTML = '无内容'
+      actionlocal.innerHTML = 'null'
+      localcol.innerHTML = '<button onclick="deleterow (this)">删除</button><button onclick="editrow(this)">编辑</button>'
+    }
+    function deleterow(button) {
+      //console.log(button)
+      row = button.parentNode.parentNode;
+      console.log(row)
+      row.parentNode.removeChild(row)
+    }
+    function editrow(button) {
+      //console.log(button);
+      var row = button.parentNode.parentNode;
+      var name = row.cells[0]
+      var phone = row.cells[1]
+      var action = row.cells[2]
+      var inputname = prompt('请输入名字:')
+      var inputphone = prompt('请输入联系方式:')
+      var inputaction = prompt('请输入密码')
+      name.innerHTML = inputname;
+      phone.innerHTML = inputphone;
+      action.innerHTML = inputaction;
+    }</script>
 </html>
-
-
-
